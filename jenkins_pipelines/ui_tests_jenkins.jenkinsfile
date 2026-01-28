@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Використання облікових даних для клонування репозиторію
+                git branch: 'homework.31', url: 'https://github.com/Ninjiator/aqa_python.git'
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                sh """rm -rf lesson_26_27_28/allure-results
+                      apt-get update
+                      apt-get install -y python3 python3-dev
+                      apt install -y python3-pip
+                      apt install -y python3.13-venv
+                      python3 -m venv venv"""
+            }
+        }
+        stage('Install requirements') {
+            steps {
+                sh """#!/bin/bash
+                      source venv/bin/activate
+                      pip3 install -r requirements.txt
+                      python -m playwright install --with-deps chromium
+                      cd lesson_26_27_28"""
+            }
+        }
+        stage('Run tests') {
+            steps {
+                sh """#!/bin/bash
+                      source venv/bin/activate
+                      pytest lesson_26_27_28/Tests --alluredir=lesson_26_27_28/allure-results"""
+            }
+        }
+    }
+    post {
+        always {
+            allure includeProperties: false, jdk: '', resultPolicy: 'LEAVE_AS_IS', results: [[path: 'lesson_26_27_28/allure-results']]
+        }
+    }
+}

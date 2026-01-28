@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# TOML config files
+*.toml
+
+# IntelliJ / PyCharm
+.idea/
+
 # Distribution / packaging
 .Python
 build/
