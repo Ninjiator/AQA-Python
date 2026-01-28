@@ -1,5 +1,6 @@
 import allure
 from playwright.sync_api import Page, expect
+from utils.settings import d_settings
 
 
 class HomePage:
@@ -8,7 +9,7 @@ class HomePage:
 
     def __init__(self, page: Page):
         self.page = page
-        self.base_url = "https://guest:welcome2qauto@qauto2.forstudy.space/"
+        self.base_url = d_settings.HILLEL_AUTO_URL
         self.url = self.base_url
 
     #@allure.step("Open Home Page")
