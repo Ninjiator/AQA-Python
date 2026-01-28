@@ -1,3 +1,6 @@
 [default]
 HILLEL_AUTO_URL = "https://guest:welcome2qauto@qauto2.forstudy.space/"
-REQRES_URL = "https://reqres.in/api"
+
+#RESFUL_BOOKER
+RESFUL_BOOKER_URL = "https://restful-booker.herokuapp.com"
+RESFUL_BOOKER_BOOKING_ID = 80
