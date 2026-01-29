@@ -1,5 +1,8 @@
+from http.cookiejar import Cookie
+
 import requests
 from datetime import date
+import pytest
 
 
 def test_get_booking(base_url):
@@ -24,5 +27,16 @@ def test_get_booking_by_id(base_url, create_booking_id):
 
     assert checkin_date < checkout_date, f"booking checkout date - {checkout_date} is earlier than booking checkin date - {checkin_date}"
 
+
 def test_change_booking_info(base_url, create_booking_id, auth_token):
-    response = requests.put(f"{base_url}/booking/{create_booking_id}")
+    headers = {"token": auth_token}
+    payload = {
+    "firstname": "Updated",
+    "lastname": "User",
+    "totalprice": 999,
+    "depositpaid": True,
+    "bookingdates": {"checkin": "2026-03-01", "checkout": "2026-03-10"},
+    "additionalneeds": "Dinner"}
+    response = requests.put(f"{base_url}/booking/{create_booking_id}", headers=headers, json=payload)
+    assert response.status_code == 200
+

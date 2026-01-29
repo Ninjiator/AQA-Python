@@ -29,10 +29,10 @@ def create_booking_id(base_url, booking_payload):
 
 @pytest.fixture()
 def auth_token():
-    body = {"username": "admin",
+    payload = {"username": "admin",
             "password": "password123"}
-    response = requests.post(f"https://restful-booker.herokuapp.com/auth", json=body)
+    response = requests.post(f"https://restful-booker.herokuapp.com/auth", json=payload)
 
     assert response.status_code == 200, f"Auth is failed with credentials: {body}, status code received {response.status_code}, "
-
+    body = response.json()
     return body["token"]
