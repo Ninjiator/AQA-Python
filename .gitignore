@@ -8,6 +8,7 @@ __pycache__/
 
 # TOML config files
 *.toml
+!.settings.toml
 
 # IntelliJ / PyCharm
 .idea/
