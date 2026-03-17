@@ -5,6 +5,7 @@ from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentic
 
 
 @allure.feature("Registration form")
+@pytest.mark.ui
 class TestRegistrationNegative(Authentication):
 
     @allure.story("Registration with invalid user password")
