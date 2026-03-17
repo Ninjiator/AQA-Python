@@ -1,7 +1,9 @@
 from core.HillelAuto.Forms.registration_form import RegistrationForm
 import allure
+import pytest
 
 @allure.epic("Authentication")
+@pytest.mark.ui
 class Authentication:
     pass
 

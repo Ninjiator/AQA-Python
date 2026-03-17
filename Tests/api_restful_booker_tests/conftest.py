@@ -5,7 +5,7 @@ from utils.settings import d_settings
 
 @pytest.fixture(scope="session")
 def base_url():
-    return d_settings.RESFUL_BOOKER_URL
+    return d_settings.RESTFUL_BOOKER_URL
 
 @pytest.fixture(scope="function")
 def booking_payload():
@@ -31,7 +31,7 @@ def create_booking_id(base_url, booking_payload):
 def auth_cookie_token():
     payload = {"username": "admin",
             "password": "password123"}
-    response = requests.post(f"https://restful-booker.herokuapp.com/auth", json=payload)
+    response = requests.post(d_settings.RESTFUL_BOOKER_AUTH_URL, json=payload)
 
     assert response.status_code == 200, f"Auth is failed with credentials: {body}, status code received {response.status_code}, "
     body = response.json()
