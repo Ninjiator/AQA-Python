@@ -1,6 +1,6 @@
 import allure
 from playwright.sync_api import expect
-from core.HillelAuto.Pages.home_page import HomePage
+from core.api_framework.HillelAuto.Pages.home_page import HomePage
 from utils.settings import d_settings
 
 

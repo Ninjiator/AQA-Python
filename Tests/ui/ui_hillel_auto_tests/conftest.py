@@ -1,11 +1,11 @@
 import allure
 
-from core.HillelAuto.Forms.login_form import LoginForm
+from core.api_framework.HillelAuto.Forms.login_form import LoginForm
 
 from playwright.sync_api import sync_playwright
 import pytest
 
-from core.HillelAuto.Pages.home_page import HomePage
+from core.api_framework.HillelAuto.Pages.home_page import HomePage
 
 
 @pytest.fixture(scope='session')

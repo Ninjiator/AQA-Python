@@ -1,4 +1,4 @@
-from core.HillelAuto.Forms.registration_form import RegistrationForm
+from core.api_framework.HillelAuto.Forms.registration_form import RegistrationForm
 import allure
 import pytest
 
