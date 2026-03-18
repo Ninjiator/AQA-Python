@@ -2,24 +2,36 @@ import pytest
 import requests
 from datetime import date
 
+from core.ui_framework.RestfulBooker.booking_client import BookingClient
+
+
 @pytest.mark.api
 class TestsBooking:
     pass
 
 
 class TestBookingRead(TestsBooking):
-    def test_get_all_bookings(self, base_url):
-        response = requests.get(f"{base_url}/booking")
+    # def test_get_all_bookings(self, base_url):
+    #     response = requests.get(f"{base_url}/booking")
+    #     assert response.status_code == 200, "Expected status code 200, list with bookings unexist"
+    #
+    #     response_body = response.json()
+    #
+    #     assert isinstance(response_body, list), "Response type is not a list"
+    #     assert len(response_body) > 0, "Body list with data is empty"
+    #     assert "bookingid" in response_body[0], "booking id's is absent"
+
+    def test_get_all_bookings(self, booking_client):
+        response = booking_client.get_all_bookings()
         assert response.status_code == 200, "Expected status code 200, list with bookings unexist"
 
-        response_body = response.json()
+        assert isinstance(response.json(), list), "Response type is not a list"
+        assert len(response.json()) > 0, "Body list with data is empty"
+        assert "bookingid" in response.json()[0], "booking id's is absent"
 
-        assert isinstance(response_body, list), "Response type is not a list"
-        assert len(response_body) > 0, "Body list with data is empty"
-        assert "bookingid" in response_body[0], "booking id's is absent"
 
-    def test_get_booking(self, base_url, create_booking_id):
-        response = requests.get(f"{base_url}/booking/{create_booking_id}")
+    def test_get_booking(self, create_booking_id, booking_client):
+        response = booking_client.get_booking(create_booking_id)
         assert response.status_code == 200, "Expected status code 200"
         body = response.json()
 
@@ -36,6 +48,6 @@ class TestBookingRead(TestsBooking):
         (-1),
         ("id"),
         (999999999999999999999999999999)])
-    def test_get_booking_negative(self, base_url, booking_id):
-        response = requests.get(f"{base_url}/booking/{booking_id}")
+    def test_get_booking_negative(self, booking_client, booking_id):
+        response = booking_client.get_booking(booking_id)
         assert response.status_code == 404, "booking ID with invalid format exist"

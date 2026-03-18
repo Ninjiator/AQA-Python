@@ -1,5 +1,7 @@
 import pytest
 import requests
+
+from core.ui_framework.RestfulBooker.booking_client import BookingClient
 from utils.settings import d_settings
 
 
@@ -7,7 +9,7 @@ from utils.settings import d_settings
 def base_url():
     return d_settings.RESTFUL_BOOKER_URL
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def booking_payload():
      body = {"firstname":"Martin",
             "lastname":"King",
@@ -18,7 +20,7 @@ def booking_payload():
      return body
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def create_booking_id(base_url, booking_payload):
     response = requests.post(f"{base_url}/booking", json=booking_payload)
     assert response.status_code == 200, f"Booking creation is failed with code {response.status_code} {response.text}"
@@ -36,3 +38,9 @@ def auth_cookie_token():
     assert response.status_code == 200, f"Auth is failed with credentials: {body}, status code received {response.status_code}, "
     body = response.json()
     return {"token": body["token"]}
+
+@pytest.fixture()
+def booking_client():
+    client = BookingClient()
+    yield client
+    client.session.close()
