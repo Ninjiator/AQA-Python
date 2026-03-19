@@ -1,6 +1,8 @@
-from core.api_framework.HillelAuto.Forms.registration_form import RegistrationForm
+
 import allure
 import pytest
+from core.HillelAuto.Forms.registration_form import RegistrationForm
+
 
 @allure.epic("Authentication")
 @pytest.mark.ui

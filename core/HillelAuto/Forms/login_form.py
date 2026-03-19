@@ -1,6 +1,6 @@
 import allure
 from playwright.sync_api import expect
-from core.api_framework.HillelAuto.Pages.home_page import HomePage
+from core.HillelAuto.Pages.home_page import HomePage
 from utils.settings import d_settings
 
 
@@ -19,16 +19,15 @@ class LoginForm:
     @allure.step("Open Login form")
     def open_form(self):
         self.page.locator(self.sign_in_button_locator).click()
-        #self.page.wait_for_timeout(1000)
         return self
 
 
     def do_login(self):
         with allure.step("Fill USER_MAIL from secrets"):
-            self.page.locator(self.sign_in_mail_field_locator).fill(d_settings.USER_MAIL)
+            self.page.locator(self.sign_in_mail_field_locator).fill(d_settings.USER_MAIL_HILLEL_AUTO)
 
         with allure.step("Fill USER_PASS from secrets"):
-            self.page.locator(self.sign_in_password_field_locator).fill(d_settings.USER_PASS)
+            self.page.locator(self.sign_in_password_field_locator).fill(d_settings.USER_PASS_HILLEL_AUTO)
 
         with allure.step("Click on login button"):
             self.page.locator(self.login_button).click()
