@@ -11,7 +11,7 @@ def base_url():
     return d_settings.RESTFUL_BOOKER_URL
 
 @pytest.fixture()
-def booking_payload():
+def b_payload():
     faker = Faker()
     body = {"firstname":f"{faker.first_name()}",
             "lastname":f"{faker.last_name()}",
@@ -23,8 +23,8 @@ def booking_payload():
 
 
 @pytest.fixture()
-def create_booking_id(booking_client, booking_payload):
-    response =  booking_client.create_booking(booking_payload)
+def create_booking_id(booking_client, b_payload):
+    response =  booking_client.create_booking(b_payload)
     assert response.status_code == 200, f"Booking creation is failed with code {response.status_code} {response.text}"
 
     body = response.json()
@@ -37,7 +37,7 @@ def auth_cookie_token():
             "password": "password123"}
     response = requests.post(d_settings.RESTFUL_BOOKER_AUTH_URL, json=payload)
 
-    assert response.status_code == 200, f"Auth is failed with credentials: {body}, status code received {response.status_code}, "
+    assert response.status_code == 200, f"Auth is failed with credentials: {payload}, status code received {response.status_code}, "
     body = response.json()
     return {"token": body["token"]}
 

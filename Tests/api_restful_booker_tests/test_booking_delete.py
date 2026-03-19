@@ -10,7 +10,7 @@ class TestDeleteBooking(TestsBooking):
         assert response.status_code == 404, f"Booking id - {create_booking_id} still exist"
 
     def test_delete_booking_without_token_negative(self, booking_client, create_booking_id):
-        response = booking_client.delete_booking(create_booking_id)
+        response = booking_client.delete_booking(create_booking_id, False)
         assert response.status_code == 403, f"Booking id - {create_booking_id} was deleted without auth token"
 
 

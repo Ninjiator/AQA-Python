@@ -24,10 +24,10 @@ class LoginForm:
 
     def do_login(self):
         with allure.step("Fill USER_MAIL from secrets"):
-            self.page.locator(self.sign_in_mail_field_locator).fill(d_settings.USER_MAIL)
+            self.page.locator(self.sign_in_mail_field_locator).fill(d_settings.USER_MAIL_HILLEL_AUTO)
 
         with allure.step("Fill USER_PASS from secrets"):
-            self.page.locator(self.sign_in_password_field_locator).fill(d_settings.USER_PASS)
+            self.page.locator(self.sign_in_password_field_locator).fill(d_settings.USER_PASS_HILLEL_AUTO)
 
         with allure.step("Click on login button"):
             self.page.locator(self.login_button).click()

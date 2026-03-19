@@ -1,10 +1,7 @@
 import allure
-
-from core.HillelAuto import LoginForm
-
 from playwright.sync_api import sync_playwright
 import pytest
-
+from core.HillelAuto.Forms.login_form import LoginForm
 from core.HillelAuto.Pages.home_page import HomePage
 
 

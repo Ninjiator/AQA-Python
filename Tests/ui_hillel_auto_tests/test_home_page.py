@@ -1,9 +1,7 @@
 import pytest
-from core.HillelAuto import LoginForm
-from core.HillelAuto import RegistrationForm
-
 import allure
-
+from core.HillelAuto.Forms.login_form import LoginForm
+from core.HillelAuto.Forms.registration_form import RegistrationForm
 from core.HillelAuto.Pages.home_page import HomePage
 
 
