@@ -32,16 +32,6 @@ def create_booking_id(booking_client, b_payload):
     return body["bookingid"]
 
 @pytest.fixture()
-def auth_cookie_token():
-    payload = {"username": "admin",
-            "password": "password123"}
-    response = requests.post(d_settings.RESTFUL_BOOKER_AUTH_URL, json=payload)
-
-    assert response.status_code == 200, f"Auth is failed with credentials: {payload}, status code received {response.status_code}, "
-    body = response.json()
-    return {"token": body["token"]}
-
-@pytest.fixture()
 def booking_client():
     client = BookingClient()
     yield client
