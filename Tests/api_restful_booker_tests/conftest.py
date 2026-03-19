@@ -1,7 +1,8 @@
 import pytest
 import requests
+from faker import Faker
 
-from core.ui_framework.RestfulBooker.booking_client import BookingClient
+from core.RestfulBooker.booking_client import BookingClient
 from utils.settings import d_settings
 
 
@@ -11,18 +12,19 @@ def base_url():
 
 @pytest.fixture()
 def booking_payload():
-     body = {"firstname":"Martin",
-            "lastname":"King",
-            "totalprice":2100,
+    faker = Faker()
+    body = {"firstname":f"{faker.first_name()}",
+            "lastname":f"{faker.last_name()}",
+            "totalprice": 1000,
             "depositpaid":True,
             "bookingdates":{"checkin":"2026-02-10","checkout":"2026-02-16"},
             "additionalneeds":"Breakfast"}
-     return body
+    return body
 
 
 @pytest.fixture()
-def create_booking_id(base_url, booking_payload):
-    response = requests.post(f"{base_url}/booking", json=booking_payload)
+def create_booking_id(booking_client, booking_payload):
+    response =  booking_client.create_booking(booking_payload)
     assert response.status_code == 200, f"Booking creation is failed with code {response.status_code} {response.text}"
 
     body = response.json()

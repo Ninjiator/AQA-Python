@@ -1,8 +1,5 @@
 import pytest
-import requests
 from datetime import date
-
-from core.ui_framework.RestfulBooker.booking_client import BookingClient
 
 
 @pytest.mark.api
@@ -11,16 +8,6 @@ class TestsBooking:
 
 
 class TestBookingRead(TestsBooking):
-    # def test_get_all_bookings(self, base_url):
-    #     response = requests.get(f"{base_url}/booking")
-    #     assert response.status_code == 200, "Expected status code 200, list with bookings unexist"
-    #
-    #     response_body = response.json()
-    #
-    #     assert isinstance(response_body, list), "Response type is not a list"
-    #     assert len(response_body) > 0, "Body list with data is empty"
-    #     assert "bookingid" in response_body[0], "booking id's is absent"
-
     def test_get_all_bookings(self, booking_client):
         response = booking_client.get_all_bookings()
         assert response.status_code == 200, "Expected status code 200, list with bookings unexist"

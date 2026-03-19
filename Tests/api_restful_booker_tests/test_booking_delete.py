@@ -1,6 +1,4 @@
-import requests
-
-from Tests.api.api_restful_booker_tests.test_booking_read import TestsBooking
+from Tests.api_restful_booker_tests.test_booking_read import TestsBooking
 
 
 class TestDeleteBooking(TestsBooking):
@@ -12,7 +10,7 @@ class TestDeleteBooking(TestsBooking):
         assert response.status_code == 404, f"Booking id - {create_booking_id} still exist"
 
     def test_delete_booking_without_token_negative(self, booking_client, create_booking_id):
-        response = booking_client.delete_booking_no_auth(create_booking_id)
+        response = booking_client.delete_booking(create_booking_id)
         assert response.status_code == 403, f"Booking id - {create_booking_id} was deleted without auth token"
 
 

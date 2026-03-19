@@ -1,7 +1,7 @@
-from core.api_framework.HillelAuto.Forms.registration_form import RegistrationForm
+from core.HillelAuto import RegistrationForm
 import pytest
 import allure
-from Tests.ui.ui_hillel_auto_tests.test_registration_form_positive import Authentication
+from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentication
 
 
 @allure.feature("Registration form")

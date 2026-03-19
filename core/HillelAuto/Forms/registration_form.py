@@ -1,8 +1,8 @@
 import allure
 
-from core.api_framework.HillelAuto.Helpers.registration_helper import RegistrationHelper
-from core.api_framework.HillelAuto.Helpers.user import TestUser
-from core.api_framework.HillelAuto.Pages.home_page import HomePage
+from core.HillelAuto.Helpers.registration_helper import RegistrationHelper
+from core.HillelAuto.Helpers.user import TestUser
+from core.HillelAuto.Pages.home_page import HomePage
 from playwright.sync_api import expect
 
 class RegistrationForm:
