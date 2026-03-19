@@ -29,7 +29,7 @@ def create_booking_id(booking_client, b_payload):
 
     body = response.json()
     assert "bookingid" in body, f"No bookingid: {body}"
-    return body["bookingid"]
+    yield body["bookingid"]
 
 @pytest.fixture()
 def booking_client():
