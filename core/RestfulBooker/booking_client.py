@@ -1,15 +1,15 @@
+from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentication
 from utils.settings import d_settings
 import requests
+from core.RestfulBooker.Authentification import Authentification
 
 
 
 class BookingClient:
     def __init__(self):
         self.base_url = d_settings.RESTFUL_BOOKER_URL
-        self.auth_url = d_settings.RESTFUL_BOOKER_AUTH_URL
         self.session = requests.Session()
-        self._auth_token = None
-
+        self.auth = Authentification()
 
     def _request(self, method, endpoint, **kwargs):
         return self.session.request(
@@ -17,21 +17,6 @@ class BookingClient:
             url=f"{self.base_url}{endpoint}",
             **kwargs
         )
-
-    def _get_cached_auth_cookies(self):
-        if self._auth_token:
-            return self._auth_token
-        else:
-            return self._get_auth_cookies()
-
-    def _get_auth_cookies(self):
-        payload = {"username": f"{d_settings.USERNAME_RESTFUL_BOOKER}",
-                   "password": f"{d_settings.PASS_RESTFUL_BOOKER}"}
-        response = requests.post(self.auth_url, json=payload)
-
-        assert response.status_code == 200, f"Auth is failed, re-check credentials in secrets"
-        body = response.json()
-        return {"token": body["token"]}
 
     def get_all_bookings(self):
         return self._request("GET", "/booking")
@@ -46,21 +31,21 @@ class BookingClient:
     def delete_booking(self, booking_id, auth = True):
         if auth:
             return self._request("DELETE", f"/booking/{booking_id}",
-                                 cookies = self._get_cached_auth_cookies())
+                                 cookies = self.auth.get_cached_auth_cookies())
         else:
             return self._request("DELETE", f"/booking/{booking_id}")
 
     def update_booking(self, booking_id, booking_payload, auth = True):
         if auth:
             return self._request("PUT", f"/booking/{booking_id}",
-                             cookies = self._get_cached_auth_cookies(), json = booking_payload)
+                             cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
         else:
             return self._request("PUT", f"/booking/{booking_id}", json=booking_payload)
 
     def patch_booking(self, booking_id, booking_payload, auth = True):
         if auth:
             return self._request("PATCH", f"/booking/{booking_id}",
-                             cookies = self._get_cached_auth_cookies(), json = booking_payload)
+                             cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
         else:
             return self._request("PATCH", f"/booking/{booking_id}",
                                  json=booking_payload)
