@@ -11,12 +11,16 @@ class BookingClient:
         self.session = requests.Session()
         self.auth = Authentification()
 
-    def _request(self, method, endpoint, **kwargs):
+    def _request(self, method, endpoint, auth = False, **kwargs):
+        if auth:
+            kwargs["cookies"] = self.auth.get_cached_auth_cookies()
+
         return self.session.request(
             method=method,
             url=f"{self.base_url}{endpoint}",
             **kwargs
         )
+
 
     def get_all_bookings(self):
         return self._request("GET", "/booking")
@@ -28,24 +32,12 @@ class BookingClient:
         return self._request('POST',f"/booking",
                              json = booking_payload)
 
-    def delete_booking(self, booking_id, auth = True):
-        if auth:
-            return self._request("DELETE", f"/booking/{booking_id}",
-                                 cookies = self.auth.get_cached_auth_cookies())
-        else:
-            return self._request("DELETE", f"/booking/{booking_id}")
+    def delete_booking(self, booking_id, *, auth = False):
+        return self._request("DELETE", f"/booking/{booking_id}", auth = auth)
 
-    def update_booking(self, booking_id, booking_payload, auth = True):
-        if auth:
-            return self._request("PUT", f"/booking/{booking_id}",
-                             cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
-        else:
-            return self._request("PUT", f"/booking/{booking_id}", json=booking_payload)
 
-    def patch_booking(self, booking_id, booking_payload, auth = True):
-        if auth:
-            return self._request("PATCH", f"/booking/{booking_id}",
-                             cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
-        else:
-            return self._request("PATCH", f"/booking/{booking_id}",
-                                 json=booking_payload)
+    def update_booking(self, booking_id, booking_payload, auth = False):
+        return self._request("PUT", f"/booking/{booking_id}", auth = auth, json = booking_payload)
+
+    def patch_booking(self, booking_id, booking_payload, auth = False):
+        return self._request("PATCH", f"/booking/{booking_id}", auth = auth, json = booking_payload)
