@@ -6,9 +6,9 @@ from core.RestfulBooker.booking_client import BookingClient
 from utils.settings import d_settings
 
 
-@pytest.fixture(scope="session")
-def base_url():
-    return d_settings.RESTFUL_BOOKER_URL
+# @pytest.fixture(scope="session")
+# def base_url():
+#     return d_settings.RESTFUL_BOOKER_URL
 
 @pytest.fixture()
 def b_payload():

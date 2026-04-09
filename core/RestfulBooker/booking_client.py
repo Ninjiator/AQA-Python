@@ -28,21 +28,21 @@ class BookingClient:
         return self._request('POST',f"/booking",
                              json = booking_payload)
 
-    def delete_booking(self, booking_id, auth = True):
+    def delete_booking(self, booking_id, *, auth = False):
         if auth:
             return self._request("DELETE", f"/booking/{booking_id}",
                                  cookies = self.auth.get_cached_auth_cookies())
         else:
             return self._request("DELETE", f"/booking/{booking_id}")
 
-    def update_booking(self, booking_id, booking_payload, auth = True):
+    def update_booking(self, booking_id, booking_payload, auth = False):
         if auth:
             return self._request("PUT", f"/booking/{booking_id}",
                              cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
         else:
             return self._request("PUT", f"/booking/{booking_id}", json=booking_payload)
 
-    def patch_booking(self, booking_id, booking_payload, auth = True):
+    def patch_booking(self, booking_id, booking_payload, auth = False):
         if auth:
             return self._request("PATCH", f"/booking/{booking_id}",
                              cookies = self.auth.get_cached_auth_cookies(), json = booking_payload)
