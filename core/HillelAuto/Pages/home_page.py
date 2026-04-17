@@ -1,19 +1,19 @@
 import allure
 from playwright.sync_api import Page, expect
 from utils.settings import d_settings
-
+from typing import Self
 
 class HomePage:
     sign_up_button_locator = "role=button[name='Sign up']"
 
 
-    def __init__(self, page: Page):
+    def __init__(self, page: Page) -> None:
         self.page = page
         self.base_url = d_settings.HILLEL_AUTO_URL
         self.url = self.base_url
 
     #@allure.step("Open Home Page")
-    def open_page(self):
+    def open_page(self) -> Self:
         self.page.goto(self.url)
         return self
 

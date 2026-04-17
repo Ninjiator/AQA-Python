@@ -1,3 +1,5 @@
+from requests import Session, Response
+
 from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentication
 from utils.settings import d_settings
 import requests
@@ -6,12 +8,12 @@ from core.RestfulBooker.Authentification import Authentification
 
 
 class BookingClient:
-    def __init__(self):
+    def __init__(self) -> None:
         self.base_url = d_settings.RESTFUL_BOOKER_URL
         self.session = requests.Session()
         self.auth = Authentification()
 
-    def _request(self, method, endpoint, auth = False, **kwargs):
+    def _request(self, method : str, endpoint : str, auth : bool = False, **kwargs) -> Response:
         if auth:
             kwargs["cookies"] = self.auth.get_cached_auth_cookies()
 
@@ -22,22 +24,21 @@ class BookingClient:
         )
 
 
-    def get_all_bookings(self):
+    def get_all_bookings(self) -> Response:
         return self._request("GET", "/booking")
 
-    def get_booking(self, booking_id):
+    def get_booking(self, booking_id) -> Response:
         return self._request("GET", f"/booking/{booking_id}")
 
-    def create_booking(self, booking_payload):
+    def create_booking(self, booking_payload)  -> Response:
         return self._request('POST',f"/booking",
                              json = booking_payload)
 
-    def delete_booking(self, booking_id, *, auth = False):
+    def delete_booking(self, booking_id, *, auth = False) -> Response:
         return self._request("DELETE", f"/booking/{booking_id}", auth = auth)
 
-
-    def update_booking(self, booking_id, booking_payload, auth = False):
+    def update_booking(self, booking_id, booking_payload, auth = False) -> Response:
         return self._request("PUT", f"/booking/{booking_id}", auth = auth, json = booking_payload)
 
-    def patch_booking(self, booking_id, booking_payload, auth = False):
+    def patch_booking(self, booking_id, booking_payload, auth = False) -> Response:
         return self._request("PATCH", f"/booking/{booking_id}", auth = auth, json = booking_payload)

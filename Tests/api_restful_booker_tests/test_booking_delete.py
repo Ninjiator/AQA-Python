@@ -14,3 +14,4 @@ class TestDeleteBooking(TestsBooking):
         assert response.status_code == 403, f"Booking id - {create_booking_id} was deleted without auth token"
 
 
+
