@@ -1,7 +1,7 @@
 import requests
 from utils.settings import d_settings
 
-class Authentification:
+class Authentication:
     def __init__(self) -> None:
         self.auth_url = d_settings.RESTFUL_BOOKER_AUTH_URL
         self._auth_token = None

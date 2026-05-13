@@ -1,9 +1,8 @@
-from requests import Session, Response
+from requests import Response
 
-from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentication
 from utils.settings import d_settings
 import requests
-from core.RestfulBooker.Authentification import Authentification
+from core.RestfulBooker.auth_client import Authentication
 
 
 
@@ -11,7 +10,7 @@ class BookingClient:
     def __init__(self) -> None:
         self.base_url = d_settings.RESTFUL_BOOKER_URL
         self.session = requests.Session()
-        self.auth = Authentification()
+        self.auth = Authentication()
 
     def _request(self, method : str, endpoint : str, auth : bool = False, **kwargs) -> Response:
         if auth:
@@ -30,7 +29,7 @@ class BookingClient:
     def get_booking(self, booking_id) -> Response:
         return self._request("GET", f"/booking/{booking_id}")
 
-    def create_booking(self, booking_payload)  -> Response:
+    def create_booking(self, booking_payload) -> Response:
         return self._request('POST',f"/booking",
                              json = booking_payload)
 
