@@ -2,7 +2,7 @@ from faker import Faker
 
 class TestUser:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.faker = Faker()
         self.name = self.faker.first_name()
         self.last_name = self.faker.last_name()

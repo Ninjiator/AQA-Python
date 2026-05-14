@@ -1,7 +1,7 @@
 import pytest
 from datetime import date
 
-
+@pytest.mark.restfulbooker
 @pytest.mark.api
 class TestsBooking:
     pass

@@ -1,43 +1,27 @@
-from Tests.ui_hillel_auto_tests.test_registration_form_positive import Authentication
-from utils.settings import d_settings
-import requests
-from core.RestfulBooker.Authentification import Authentification
+from requests import Response
+from core.api_client import ApiClient
+
 
 
 
 class BookingClient:
-    def __init__(self):
-        self.base_url = d_settings.RESTFUL_BOOKER_URL
-        self.session = requests.Session()
-        self.auth = Authentification()
+    def __init__(self, api_client : ApiClient) -> None:
+        self.api = api_client
 
-    def _request(self, method, endpoint, auth = False, **kwargs):
-        if auth:
-            kwargs["cookies"] = self.auth.get_cached_auth_cookies()
+    def get_all_bookings(self) -> Response:
+        return self.api.get("/booking")
 
-        return self.session.request(
-            method=method,
-            url=f"{self.base_url}{endpoint}",
-            **kwargs
-        )
+    def get_booking(self, booking_id) -> Response:
+        return self.api.get(f"/booking/{booking_id}")
 
+    def create_booking(self, booking_payload) -> Response:
+        return self.api.post("/booking",json = booking_payload)
 
-    def get_all_bookings(self):
-        return self._request("GET", "/booking")
+    def delete_booking(self, booking_id) -> Response:
+        return self.api.delete(f"/booking/{booking_id}")
 
-    def get_booking(self, booking_id):
-        return self._request("GET", f"/booking/{booking_id}")
+    def update_booking(self, booking_id, booking_payload) -> Response:
+        return self.api.put(f"/booking/{booking_id}", json = booking_payload)
 
-    def create_booking(self, booking_payload):
-        return self._request('POST',f"/booking",
-                             json = booking_payload)
-
-    def delete_booking(self, booking_id, *, auth = False):
-        return self._request("DELETE", f"/booking/{booking_id}", auth = auth)
-
-
-    def update_booking(self, booking_id, booking_payload, auth = False):
-        return self._request("PUT", f"/booking/{booking_id}", auth = auth, json = booking_payload)
-
-    def patch_booking(self, booking_id, booking_payload, auth = False):
-        return self._request("PATCH", f"/booking/{booking_id}", auth = auth, json = booking_payload)
+    def patch_booking(self, booking_id, booking_payload) -> Response:
+        return self.api.patch(f"/booking/{booking_id}", json = booking_payload)
