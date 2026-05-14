@@ -59,11 +59,11 @@ def b_payload():
 
 
 @pytest.fixture()
-def create_booking_id(booking_client, b_payload):
-    response =  booking_client.create_booking(b_payload)
+def create_booking_id(authorized_booking_client, b_payload):
+    response =  authorized_booking_client.create_booking(b_payload)
     assert response.status_code == 200, f"Booking creation is failed with code {response.status_code} {response.text}"
 
     body = response.json()
     assert "bookingid" in body, f"No bookingid: {body}"
     yield body["bookingid"]
-    booking_client.delete_booking(body["bookingid"])
+    authorized_booking_client.delete_booking(body["bookingid"])
