@@ -2,7 +2,7 @@ import requests
 
 
 class ApiClient:
-    def __init__(self, base_url : str, timeout : tuple[float, float] ) -> None:
+    def __init__(self, base_url : str, timeout : tuple[float, float] = (3, 10) ) -> None:
         self.base_url = base_url
         self.session = requests.Session()
         self.timeout = timeout
