@@ -1,7 +1,7 @@
-from Tests.api_restful_booker_tests.test_booking_read import TestsBooking
+from Tests.api_restful_booker_tests.test_booking_read import TestBooking
 
 
-class TestBookingUpdate(TestsBooking):
+class TestBookingUpdate(TestBooking):
     def test_update_booking(self, b_payload, authorized_booking_client, create_booking_id):
         put_response = authorized_booking_client.update_booking(create_booking_id, b_payload)
 

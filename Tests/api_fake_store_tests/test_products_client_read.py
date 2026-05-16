@@ -5,47 +5,54 @@ from core.FakeStore.Models.products_model import ProductModel
 
 @pytest.mark.fakestore
 @pytest.mark.api
-class TestsFakeStore:
+class TestFakeStore:
     pass
 
-class TestsProductsClientRead(TestsFakeStore):
+class TestProductsClientRead(TestFakeStore):
 
-    def test_schema_and_data_of_first_product(self, products_client):
-        first_product = products_client.get_product(product_id=1)
+    def test_product_schema(self, products_client):
+        first_product = products_client.get_product(1)
         assert first_product.status_code == 200, f"Expected status code 200, got {first_product.status_code}, Product with id 1 is absent"
 
-        model_of_first_product = ProductModel.model_validate(first_product.json())
-        assert model_of_first_product.price > 0, "Price of product with id=1 is less than 0"
-        assert model_of_first_product.description != "", "Product description is empty"
-        assert model_of_first_product.title != "", "Product title is empty"
-        assert model_of_first_product.category != "", "Product category is empty"
-        assert model_of_first_product.image != "", "Product url is empty"
+        ProductModel.model_validate(first_product.json())
+
+    def test_products_data(self, products_client):
+        products_request = products_client.get_all_products()
+        assert products_request.status_code == 200, f"Expected status code 200, got {products_request.status_code}, Product with id 1 is absent"
+        products = products_request.json()
+
+        for product in products:
+            product_model = ProductModel.model_validate(product)
+            assert product_model.price > 0, "Price of product with id=1 is less than 0"
+            assert product_model.description != "", "Product description is empty"
+            assert product_model.title != "", "Product title is empty"
+            assert product_model.category != "", "Product category is empty"
+            assert product_model.image != "", "Product url is empty"
 
     def test_get_all_products(self, products_client):
         response = products_client.get_all_products()
+        body = response.json()
 
         assert response.status_code == 200, f"""Expected status code 200, got {response.status_code},
                                                         Cannot get all products"""
-        assert isinstance(response.json(), list), f"Response is not a list - {response.json()}"
-        assert len(response.json()) > 0, "List with products from response is empty"
+        assert isinstance(body, list), f"Response is not a list - {body}"
+        assert len(body) > 0, "List with products from response is empty"
 
 
 
     @pytest.mark.parametrize("sort_type",
                               [("asc"),
                               ("desc")])
-    def test_get_products_sort_asc(self, products_client, sort_type):
+    def test_get_products_sorted(self, products_client, sort_type):
         response = products_client.get_all_products(sort=sort_type)
         assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
-
         products = response.json()
         products_ids = [product["id"] for product in products]
-
-        sort_flag = False
+        assert len(products_ids) > 0
+        is_reverse= False
         if sort_type == "desc":
-            sort_flag = True
-
-        assert products_ids == sorted(products_ids, reverse=sort_flag), f"Products are not sorted in {sort_type} order"
+            is_reverse = True
+        assert products_ids == sorted(products_ids, reverse=is_reverse), f"Products are not sorted in {sort_type} order"
 
 
     @pytest.mark.parametrize("limit", (1, 5, 10))
@@ -54,28 +61,28 @@ class TestsProductsClientRead(TestsFakeStore):
         assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
         products_amount = len(response.json())
         assert limit == products_amount, f"Expected amount of products is {limit}, got {products_amount} instead"
-        ProductModel.model_validate(response.json()[0])
 
 
     def test_get_all_categories(self, products_client):
         response = products_client.get_all_categories()
-
         assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+        categories_body = response.json()
+        categories = [len(category) > 0 for category in categories_body]
 
-        categories_actual = response.json()
-
-        categories = [category != "" for category in categories_actual]
-
-        assert len(categories_actual) == len(categories), "Part of categories are empty"
+        assert len(categories_body) == len(categories), "Part of categories are empty"
 
     def test_get_products_by_category(self, products_client):
-        categories = products_client.get_all_categories().json()
+        categories_response = products_client.get_all_categories()
+        categories_list = categories_response.json()
 
-        for category in categories:
-            response = products_client.get_products_by_category(category)
+        assert categories_response.status_code == 200, f"Expected status code 200, got {categories_response.status_code}"
+        assert len(categories_list) > 0, f"Categories are absent"
 
-            assert response.status_code == 200, (f"Expected status code 200, got {response.status_code}"
-                                                 f"for request with category {category}")
+        for category in categories_list:
+            products_response = products_client.get_products_by_category(category)
+            products_in_one_category = products_response.json()
+            assert products_response.status_code == 200
+            assert len(products_in_one_category) > 0, f"Category {category} does not contain products"
+            for product in products_in_one_category:
+                assert category == product["category"], f'Actual category name {category} is not equal expected {product["category"]}'
 
-            actual_category = response.json()[0]["category"]
-            assert actual_category == category, f"Actual category name {actual_category} is not equal expected {category}"
