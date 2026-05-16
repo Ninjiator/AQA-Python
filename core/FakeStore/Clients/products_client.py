@@ -21,7 +21,7 @@ class ProductsClient:
         return self.api.get(f"/products/{product_id}")
 
     def get_products_by_category(self, category_name : str) -> Response:
-        return self.api.get(f"/products/{category_name}")
+        return self.api.get(f"/products/category/{category_name}")
 
     def add_new_product(self, product_payload : dict) -> Response:
         return self.api.post("/products", json = product_payload)

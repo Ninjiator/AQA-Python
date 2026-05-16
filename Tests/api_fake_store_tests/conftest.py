@@ -1,6 +1,6 @@
 import pytest
 
-from core.FakeStore.products_client import ProductsClient
+from core.FakeStore.Clients.products_client import ProductsClient
 from core.api_client import ApiClient
 from utils.settings import d_settings
 
