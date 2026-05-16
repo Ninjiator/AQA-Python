@@ -11,12 +11,10 @@ from utils.settings import d_settings
 def base_url() -> str:
     return d_settings.RESTFUL_BOOKER_URL
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def api_client(base_url):
     api_client = ApiClient(base_url)
-
-    yield api_client
-    api_client.session.close()
+    return api_client
 
 @pytest.fixture()
 def auth_client(api_client):
@@ -42,9 +40,8 @@ def authorized_api_client(base_url, auth_token):
     api_client = ApiClient(base_url)
 
     api_client.session.cookies.set("token", auth_token)
-    yield api_client
+    return api_client
 
-    api_client.session.close()
 
 @pytest.fixture()
 def authorized_booking_client(authorized_api_client):
