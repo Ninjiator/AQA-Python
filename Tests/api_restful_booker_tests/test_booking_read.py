@@ -3,11 +3,11 @@ from datetime import date
 
 @pytest.mark.restfulbooker
 @pytest.mark.api
-class TestsBooking:
+class TestBooking:
     pass
 
 
-class TestBookingRead(TestsBooking):
+class TestBookingRead(TestBooking):
     def test_get_all_bookings(self, booking_client):
         response = booking_client.get_all_bookings()
         assert response.status_code == 200, "Expected status code 200, list with bookings unexist"

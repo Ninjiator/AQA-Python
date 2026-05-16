@@ -1,7 +1,7 @@
-from Tests.api_restful_booker_tests.test_booking_read import TestsBooking
+from Tests.api_restful_booker_tests.test_booking_read import TestBooking
 
 
-class TestDeleteBooking(TestsBooking):
+class TestDeleteBooking(TestBooking):
     def test_delete_booking(self, authorized_booking_client, create_booking_id):
         response = authorized_booking_client.delete_booking(create_booking_id)
         assert response.status_code == 201, f"Booking id - {create_booking_id} is not deleted"
