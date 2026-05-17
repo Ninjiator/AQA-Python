@@ -10,4 +10,4 @@ class AuthClient:
                    "password": f"{password}"}
         response = self.api.post("/auth/login", json = payload)
 
-        return response.json()["token"]
+        return response

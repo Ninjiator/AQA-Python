@@ -84,28 +84,3 @@ class TestProductsClientReadPositive(TestFakeStore):
             assert len(products_in_one_category) > 0, f"Category {category} does not contain products"
             for product in products_in_one_category:
                 assert product["category"] == category, f'Actual category name: {product["category"]} in product {product} is not equal expected category name {category}'
-
-
-
-# @pytest.mark.negative
-# class TestProductsClientReadNegative(TestFakeStore):
-#
-#     @pytest.mark.parametrize("product_id", [-1,"1",1.0,9999999, "one"])
-#     def test_get_product_with_incorrect_id(self, products_client):
-#         response = products_client.get_product("")
-#
-#         assert response.status_code == 200, f"Expected status code 404, got {response.status_code}"
-#         assert response.json() is None
-#
-#     @pytest.mark.parametrize("fake_category", ["films", "random"])
-#     def test_get_product_by_nonexistent_category(self, products_client, fake_category):
-#         response = products_client.get_products_by_category(fake_category)
-#
-#         assert response.status_code == 404
-#
-#     @pytest.mark.parametrize("limit", (-100, 500, "two"))
-#     def test_get_products_by_limit(self, products_client, limit):
-#         response = products_client.get_all_products(limit=limit)
-#         assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
-#         products_amount = len(response.json())
-#         assert products_amount == limit, f"Expected amount of products is {limit}, got {products_amount} instead"
